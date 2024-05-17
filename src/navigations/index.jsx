@@ -8,6 +8,7 @@ import CartItems from "../screens/carts";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Feather } from "@expo/vector-icons";
 import { Entypo } from '@expo/vector-icons';
+import Checkout from "../screens/checkout";
 export default function Navigator() {
   return <AuthNavigation />;
 }
@@ -53,6 +54,11 @@ export function AuthNavigation() {
         component={AppNavigation}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="checkout"
+        component={Checkout}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
     
   );
@@ -95,6 +101,7 @@ export function AppNavigation() {
         name="products"
         component={Products}
       />
+     
       <Tab.Screen
         options={{
           title: "cartItems",

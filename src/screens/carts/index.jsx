@@ -31,7 +31,7 @@ const initialCartItems = [
   }
 ];
 
-const CartItems = () => {
+const CartItems = ({navigation}) => {
   const [cartItems, setCartItems] = useState(initialCartItems);
 
   const handleRemove = (id) => {
@@ -74,7 +74,7 @@ const CartItems = () => {
             Total Price: ${totalPrice}
           </Text>
           <View className="py-7">
-          <Button mode={"outlined"} className="bg-[white] w-full p-[10] mt-4 ">
+          <Button mode={"outlined"} onPress={()=>navigation.navigate("checkout")} className="bg-[white] w-full p-[10] mt-4 ">
             Procced to checkout
           </Button>
           </View>

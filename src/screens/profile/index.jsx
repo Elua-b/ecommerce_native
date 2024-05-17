@@ -3,12 +3,19 @@ import React from 'react';
 import { View, Text, Image } from 'react-native';
 import Button from '../../components/button';
 import product1 from "../../../assets/product1.png"
-const Profile = () => {
+import { Feather } from '@expo/vector-icons';
+const Profile = ({navigation}) => {
   
   
 
   return (
+
     <View className="flex-1 justify-center bg-blue-100 p-4 items-center">
+      <View className="absolute top-10 right-2 flex-row gap-3 justify-between items-center p-4" >
+       <Text className="text-base">Logout</Text> 
+       <Feather name="log-out" size={24} color="blue" onPress={()=>{navigation.navigate("Login")}} />
+
+      </View>
       <Image source={product1} className="w-32 h-32 rounded-full mb-4"/>
       <Text className="text-xl font-bold text-blue-700 mb-2">BE</Text>
       <Text className="text-blue-700">bugingo@gmail.com</Text>

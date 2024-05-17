@@ -11,7 +11,7 @@ const Navbar = () => {
     <View className="bg-transparent  p-4 flex-row justify-between items-center rounde-md  top-0 left-0 right-0 z-10">
       
      
-      <TouchableOpacity className="p-2" onPress={() =>navigation.navigate('Login') }>
+      <TouchableOpacity className="p-2" onPress={() =>navigation.goBack() }>
         {/* <Feather name="log-out" size={24} color="blue" /> */}
         <Ionicons name="chevron-back-sharp" size={24} color="black" />
       </TouchableOpacity>
