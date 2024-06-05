@@ -6,7 +6,7 @@ import {
   Text,
   View,
 } from "react-native";
-import React from "react";
+import React,{useState} from "react";
 import * as Yup from "yup";
 import Input from "../../../components/input";
 // import { Feather } from "@expo/vector-icons ";
@@ -14,8 +14,12 @@ import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import Button from "../../../components/button";
 import { useFormik } from "formik";
+import { login, register } from "../../../services/auth";
 
 const Register = ({navigation}) => {
+  const [loading,setLoading]=useState(false);
+  const [authError,setAuthError] = useState(null);
+
   const initialValues = {
     email: "",
     password: "",
@@ -39,6 +43,19 @@ const Register = ({navigation}) => {
     isValid,
     getFieldProps,
   } = formik;
+  const handleSubmit = async () => {
+    
+    setLoading(true);
+    setAuthError("");
+    const res = await register(values);
+    console.log(res.success);
+    setLoading(false);
+
+    if (!res?.success)
+      return setAuthError(res?.message || "Something went wrong");
+
+    navigation.navigate("Login");
+  };
 
   return (
     <SafeAreaView className=" h-full ">
@@ -58,6 +75,9 @@ const Register = ({navigation}) => {
                 onChangeText={handleChange("email")}
                 value={values.email}
               />
+                {touched.email && errors.email && (
+              <Text style={tw`text-red-500`}>{errors.email}</Text>
+            )}
             </View>
             <View className="w-full">
               <Input
@@ -68,6 +88,9 @@ const Register = ({navigation}) => {
                 Icon={<Feather name="lock" size={24} color="silver" />}
                 placeholder="Password"
               />
+               {touched.password && errors.password && (
+                <Text style={tw`text-red-500`}>{errors.password}</Text>
+              )}
             </View>
             <View className="w-full">
               <Input
@@ -77,10 +100,13 @@ const Register = ({navigation}) => {
                 Icon={<AntDesign name="user" size={24} color="silver" />}
                 placeholder="Username"
               />
+               {touched.username && errors.username && (
+                <Text style={tw`text-red-500`}>{errors.username}</Text>
+              )}
             </View>
           </View>
           <View className="w-full py-7">
-            <Button mode={"outlined"} className="bg-[white] w-full p-[10] mt-4">
+            <Button mode={"outlined"} onPress={handleSubmit} className="bg-[white] w-full p-[10] mt-4">
               Register
             </Button>
           </View>

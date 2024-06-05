@@ -1,12 +1,16 @@
 // ProfileScreen.js
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Image } from 'react-native';
 import Button from '../../components/button';
 import product1 from "../../../assets/product1.png"
 import { Feather } from '@expo/vector-icons';
 const Profile = ({navigation}) => {
-  
-  
+  const [user, setUser] = useState("");
+  const getUserProfile = async () => {
+    if (!profile?.user) return navigation.navigate("Login");
+    setUser(profile?.user);
+  };
+  console.log("hello",user);
 
   return (
 
@@ -18,7 +22,7 @@ const Profile = ({navigation}) => {
       </View>
       <Image source={product1} className="w-32 h-32 rounded-full mb-4"/>
       <Text className="text-xl font-bold text-blue-700 mb-2">BE</Text>
-      <Text className="text-blue-700">bugingo@gmail.com</Text>
+      <Text className="text-blue-700">bugingoeloi@gmail.com</Text>
       <View className="w-full items-center px-5  mt-9">
         <Text className="text-base ">Profile Details:</Text>
 
