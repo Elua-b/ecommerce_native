@@ -6,7 +6,9 @@ import {
   Text,
   View,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
+import * as SecureStore from "expo-secure-store";
+
 import * as Yup from "yup";
 import Input from "../../../components/input";
 // import { Feather } from "@expo/vector-icons ";
@@ -14,7 +16,22 @@ import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import Button from "../../../components/button";
 import { useFormik } from "formik";
+import { login } from "../../../services/auth";
+import useStorage from "../../../hooks/useStorage";
+import { useRouter } from "expo-router";
 const Login = ({navigation}) => {
+  const [data, setData] = useState({
+    email: "",
+    password: "",
+  });
+const [error, setError] = useState("");
+const { setToken, setUser } = useAuth();
+// const [loading, setLoading] = useState(false);
+const { storeData } = useStorage();
+const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [authError, setAuthError] = useState("");
+
   const initialValues = {
     email: "",
     password: "",
@@ -37,9 +54,49 @@ const Login = ({navigation}) => {
     isValid,
     getFieldProps,
   } = formik;
- const handleSubmit=()=>{
-  navigation.navigate('App')
+ const handleSubmit=async()=>{
+  console.log(values);
+  setLoading(true);
+  setAuthError("");
+  const res = await login(values);
+  console.log(res?.data.accessToken); 
+  setLoading(false);
+  if (!res?.data.accessToken)
+    return setAuthError(res?.message || "Something went wrong");
+  await SecureStore.setItemAsync("token", res?.data.accessToken);
+  navigation.navigate("App");
  }
+ 
+ const handleLogin = async () => {
+  console.log("data", data);
+  if (
+    Object.values(data)
+      .map((item) => item.trim())
+      .includes("")
+  ) {
+    setError("Please fill all the fields");
+    return;
+  }
+  try {
+    setError("");
+    setLoading(true);
+    const res = await api.post("/auth/login", data);
+    // console.log(res);
+    console.log("hellooo");
+    
+    const token = res.data?.token;
+    console.log(res.data?.user);
+    setToken(token);
+    storeData("token", token);
+    setUser(res.data?.user);
+    router.push("/App")
+  } catch (error) {
+    console.log("Error here: "+error);
+    setError(getResError(error));
+  } finally {
+    setLoading(false);
+  }
+};
   return (
     <SafeAreaView className=" h-full ">
       <View className="h-full bg-[#0D59D4] flex flex-row justify-center items-center p-7 ">

@@ -1,11 +1,11 @@
 // CheckoutScreen.js
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput } from 'react-native';
 
-import Navbar from '../../components/navbar'; // Ensure Navbar is imported
+import Navbar from '../../components/navbar'; 
 
 const Checkout = () => {
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('Credit Card');
+  const [momoNumber, setMomoNumber] = useState('');
   const CART_ITEMS = [
     {
       id: 1,
@@ -30,7 +30,7 @@ const Checkout = () => {
   const totalPrice = CART_ITEMS.reduce((total, item) => total + item.cost * item.quantity, 0).toFixed(2);
 
   const handlePayment = () => {
-    console.log(`Proceed with ${selectedPaymentMethod}`);
+    console.log(`Proceed with MoMo payment for number: ${momoNumber}`);
     // Implement payment processing logic here
   };
 
@@ -45,31 +45,14 @@ const Checkout = () => {
           </Text>
         </View>
         <View className="mt-6">
-          <Text className="text-lg font-bold text-blue-700">Select Payment Method:</Text>
-          <TouchableOpacity
-            className={`p-4 mt-2 rounded-lg ${selectedPaymentMethod === 'Credit Card' ? 'bg-blue-500' : 'bg-white'}`}
-            onPress={() => setSelectedPaymentMethod('Credit Card')}
-          >
-            <Text className={`text-center ${selectedPaymentMethod === 'Credit Card' ? 'text-white' : 'text-blue-500'} text-lg font-bold`}>Credit Card</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            className={`p-4 mt-2 rounded-lg ${selectedPaymentMethod === 'PayPal' ? 'bg-blue-500' : 'bg-white'}`}
-            onPress={() => setSelectedPaymentMethod('PayPal')}
-          >
-            <Text className={`text-center ${selectedPaymentMethod === 'PayPal' ? 'text-white' : 'text-blue-500'} text-lg font-bold`}>PayPal</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            className={`p-4 mt-2 rounded-lg ${selectedPaymentMethod === 'Bank Transfer' ? 'bg-blue-500' : 'bg-white'}`}
-            onPress={() => setSelectedPaymentMethod('Bank Transfer')}
-          >
-            <Text className={`text-center ${selectedPaymentMethod === 'Bank Transfer' ? 'text-white' : 'text-blue-500'} text-lg font-bold`}>Bank Transfer</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            className={`p-4 mt-2 rounded-lg ${selectedPaymentMethod === 'MOMO' ? 'bg-yellow-400' : 'bg-yellow-400'}`}
-            onPress={() => setSelectedPaymentMethod('MOMO')}
-          >
-            <Text className={`text-center ${selectedPaymentMethod === 'MOMO' ? 'text-white' : 'text-white'} text-lg font-bold`}>MOMO</Text>
-          </TouchableOpacity>
+          <Text className="text-lg font-bold text-blue-700">MoMo Number:</Text>
+          <TextInput
+            className="p-4 mt-2 rounded-lg bg-white border border-blue-500"
+            placeholder="Enter your MoMo number"
+            keyboardType="numeric"
+            value={momoNumber}
+            onChangeText={setMomoNumber}
+          />
         </View>
         <TouchableOpacity
           className="bg-blue-500 p-4 rounded-lg shadow-md mt-6"
