@@ -9,11 +9,30 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Feather } from "@expo/vector-icons";
 import { Entypo } from '@expo/vector-icons';
 import Checkout from "../screens/checkout";
+import { useEffect, useState } from "react";
+import * as SecureStore from "expo-secure-store";
+
 export default function Navigator() {
-  return <AuthNavigation />;
+
+   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+
+        async function getAuthToken() {
+            const token = await SecureStore.getItemAsync('token')
+            if (token) {
+                setIsLoggedIn(true)
+            }
+        }
+        getAuthToken()
+    }, [])
+
+    if (!isLoggedIn) return <AuthNavigation />
+    return <AppNavigation />
 }
 export function AuthNavigation() {
   const Stack = createNativeStackNavigator();
+  
 
   return (
     <Stack.Navigator initialRouteName="Login">
